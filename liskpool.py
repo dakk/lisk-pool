@@ -78,8 +78,8 @@ if __name__ == "__main__":
 			
 	for y in log['accounts']:
 		if log['accounts'][y]['pending'] > 0.1:
-			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + x['address'] + '\n')
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'{"secret":"SECRET","amount":' + str (int (log['accounts'][y]['pending'] * 100000000)) + ',"recipientId":"' + x['address'] + '"}\' ' + NODEPAY + "/api/transactions\n\n")
+			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
+			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'{"secret":"SECRET","amount":' + str (int (log['accounts'][y]['pending'] * 100000000)) + ',"recipientId":"' + y + '"}\' ' + NODEPAY + "/api/transactions\n\n")
 			log['accounts'][y]['received'] += log['accounts'][y]['pending']
 			log['accounts'][y]['pending'] = 0.0
 			f.write ('sleep 10\n')
