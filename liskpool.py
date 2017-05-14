@@ -5,7 +5,7 @@ import time
 NODE = "https://wallet.lisknode.io"
 NODEPAY = "http://localhost:8000"
 PUBKEY = "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4"
-LOGFILE = 'poologs.json'
+LOGFILE = 'poollogs.json'
 PERCENTAGE = 15
 
 def loadLog ():
