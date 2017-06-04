@@ -7,6 +7,8 @@ NODEPAY = "http://localhost:8000"
 PUBKEY = "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4"
 LOGFILE = 'poollogs.json'
 PERCENTAGE = 15
+SECRET = "SECRET"
+SECONDSECRET = None
 
 def loadLog ():
 	try:
@@ -73,13 +75,24 @@ if __name__ == "__main__":
 		log['accounts'][x['address']]['received'] += x['balance']	
 		
 		f.write ('echo Sending ' + str (x['balance']) + ' to ' + x['address'] + '\n')
-		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'{"secret":"SECRET","amount":' + str (int (x['balance'] * 100000000)) + ',"recipientId":"' + x['address'] + '"}\' ' + NODEPAY + "/api/transactions\n\n")
+		
+		data = { "secret": SECRET, "amount": str (int (x['balance'] * 100000000)), "recipientId": x['address'] }
+		if SECONDSECRET != None:
+			data['secondSecret'] = SECONDSECRET
+		
+		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
 		f.write ('sleep 10\n')
 			
 	for y in log['accounts']:
 		if log['accounts'][y]['pending'] > 0.1:
 			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'{"secret":"SECRET","amount":' + str (int (log['accounts'][y]['pending'] * 100000000)) + ',"recipientId":"' + y + '"}\' ' + NODEPAY + "/api/transactions\n\n")
+			
+			
+			data = { "secret": SECRET, "amount": str (int (log['accounts'][y]['pending'] * 100000000)), "recipientId": y }
+			if SECONDSECRET != None:
+				data['secondSecret'] = SECONDSECRET
+			
+			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
 			log['accounts'][y]['received'] += log['accounts'][y]['pending']
 			log['accounts'][y]['pending'] = 0.0
 			f.write ('sleep 10\n')
