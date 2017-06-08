@@ -12,6 +12,7 @@ Fork this repo; edit liskpool.py and modify the first lines with your settings:
 - SECONDSECRET: your second secret or none if disabled
 - NODE: the lisk node where you get forging info
 - NODEPAY: the lisk node used for payments
+- MINPAYOUT: the minimum amount for a payout
 
 Now edit docs/index.html and customize the webpage.
 

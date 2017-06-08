@@ -7,6 +7,7 @@ NODEPAY = "http://localhost:8000"
 PUBKEY = "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4"
 LOGFILE = 'poollogs.json'
 PERCENTAGE = 15
+MINPAYOUT = 0.1
 SECRET = "SECRET"
 SECONDSECRET = None
 
@@ -68,7 +69,7 @@ if __name__ == "__main__":
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
 			log['accounts'][x['address']] = { 'pending': 0.0, 'received': 0.0 }
 			
-		if x['balance'] < 0.1:
+		if x['balance'] < MINPAYOUT:
 			log['accounts'][x['address']]['pending'] += x['balance']
 			continue
 			
@@ -84,7 +85,7 @@ if __name__ == "__main__":
 		f.write ('sleep 10\n')
 			
 	for y in log['accounts']:
-		if log['accounts'][y]['pending'] > 0.1:
+		if log['accounts'][y]['pending'] > MINPAYOUT:
 			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
 			
 			
