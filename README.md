@@ -1,6 +1,6 @@
 # Lisk pool distribution software
 This software is created by lisk delegate "dakk", please consider a small donation if you
-use this software: "2324852447570841050L".
+use this software: "2324852447570841050L" for lisk or "7725849364280821971S" for shift.
 
 
 ## Configuration
