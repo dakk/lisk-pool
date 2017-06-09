@@ -34,6 +34,16 @@ poollogs.json to docs/poollogs.json and send the update to your git repo.
 To display the pool frontend, enable docs-site on github repository settings.
 
 
+## Batch mode
+
+The script is also runnable by cron using the -y argument:
+
+`python liskpool.py -y`
+
+There is also a 'batch.sh' file which run liskpool, then payments.sh and copy the poollogs.json
+in the docs folder.
+
+
 ## License
 Copyright 2017 Davide Gessa
 

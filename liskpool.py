@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 import time
 
 NODE = "https://wallet.lisknode.io"
@@ -105,6 +106,10 @@ if __name__ == "__main__":
 	
 	print (json.dumps (log, indent=4, separators=(',', ': ')))
 	
-	yes = input ('save? y/n: ')
-	if yes == 'y':
+	if len (sys.argv) > 1 and sys.argv[1] == '-y':
+		print ('Saving...')
 		saveLog (log)
+	else:
+		yes = input ('save? y/n: ')
+		if yes == 'y':
+			saveLog (log)
