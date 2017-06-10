@@ -22,7 +22,7 @@ date of pool starting; move poollogs_example.json to poollogs.json.
 
 ## Running it
 
-`python liskpool.py`
+`python3 liskpool.py`
 
 It produces a file "payments.sh" with all payments shell commands. Run this file with:
 
@@ -38,7 +38,7 @@ To display the pool frontend, enable docs-site on github repository settings.
 
 The script is also runnable by cron using the -y argument:
 
-`python liskpool.py -y`
+`python3 liskpool.py -y`
 
 There is also a 'batch.sh' file which run liskpool, then payments.sh and copy the poollogs.json
 in the docs folder.
