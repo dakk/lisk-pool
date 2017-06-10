@@ -78,7 +78,7 @@ if __name__ == "__main__":
 		
 		f.write ('echo Sending ' + str (x['balance']) + ' to ' + x['address'] + '\n')
 		
-		data = { "secret": SECRET, "amount": str (int (x['balance'] * 100000000)), "recipientId": x['address'] }
+		data = { "secret": SECRET, "amount": int (x['balance'] * 100000000), "recipientId": x['address'] }
 		if SECONDSECRET != None:
 			data['secondSecret'] = SECONDSECRET
 		
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
 			
 			
-			data = { "secret": SECRET, "amount": str (int (log['accounts'][y]['pending'] * 100000000)), "recipientId": y }
+			data = { "secret": SECRET, "amount": int (log['accounts'][y]['pending'] * 100000000), "recipientId": y }
 			if SECONDSECRET != None:
 				data['secondSecret'] = SECONDSECRET
 			
@@ -99,7 +99,19 @@ if __name__ == "__main__":
 			log['accounts'][y]['pending'] = 0.0
 			f.write ('sleep 10\n')
 			
-		
+	# Donations
+	if 'donations' in log:
+		for y in log['donations']:
+			f.write ('echo Sending donation ' + str (log['donations'][y]) + ' to ' + y + '\n')
+				
+			data = { "secret": SECRET, "amount": int (log['donations'][y] * 100000000), "recipientId": y }
+			if SECONDSECRET != None:
+				data['secondSecret'] = SECONDSECRET
+			
+		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
+		f.write ('sleep 10\n')
+
+
 	f.close ()
 	
 	log['lastpayout'] = int (time.time ())
