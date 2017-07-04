@@ -22,6 +22,12 @@ date of pool starting; move poollogs_example.json to poollogs.json.
 
 ## Running it
 
+First install requests:
+
+`pip3 install requests`
+
+Then start it:
+
 `python3 liskpool.py`
 
 It produces a file "payments.sh" with all payments shell commands. Run this file with:
