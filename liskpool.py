@@ -62,8 +62,7 @@ def estimatePayouts (log):
 	return payouts
 	
 	
-
-if __name__ == "__main__":
+def pool ():
 	log = loadLog ()
 	
 	topay = estimatePayouts(log)
@@ -71,7 +70,7 @@ if __name__ == "__main__":
 	if len (topay) == 0:
 		print ('Nothing to distribute, exiting...')
 		return
-	
+		
 	f = open ('payments.sh', 'w')
 	for x in topay:
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
@@ -132,3 +131,8 @@ if __name__ == "__main__":
 		yes = input ('save? y/n: ')
 		if yes == 'y':
 			saveLog (log)
+			
+			
+
+if __name__ == "__main__":
+	pool ()
