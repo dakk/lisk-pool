@@ -36,6 +36,9 @@ def estimatePayouts (log):
 	forged = (int (rew) / 100000000) * PERCENTAGE / 100
 	print ('To distribute: %f LSK' % forged)
 	
+	if forged < 0.1:
+		return []
+		
 	d = requests.get (NODE + '/api/delegates/voters?publicKey=' + PUBKEY).json ()
 	
 	weight = 0.0
@@ -65,10 +68,9 @@ if __name__ == "__main__":
 	
 	topay = estimatePayouts(log)
 	
-	if topay < 0.1:
+	if len (topay) == 0:
 		print ('Nothing to distribute, exiting...')
 		return
-		
 	
 	f = open ('payments.sh', 'w')
 	for x in topay:
