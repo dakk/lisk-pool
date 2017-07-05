@@ -65,12 +65,17 @@ if __name__ == "__main__":
 	
 	topay = estimatePayouts(log)
 	
+	if topay < 0.1:
+		print ('Nothing to distribute, exiting...')
+		return
+		
+	
 	f = open ('payments.sh', 'w')
 	for x in topay:
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
 			log['accounts'][x['address']] = { 'pending': 0.0, 'received': 0.0 }
 			
-		if x['balance'] < MINPAYOUT:
+		if x['balance'] < MINPAYOUT and x['balance'] > 0.0:
 			log['accounts'][x['address']]['pending'] += x['balance']
 			continue
 			
