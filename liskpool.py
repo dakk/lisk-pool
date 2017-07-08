@@ -89,7 +89,7 @@ def pool ():
 			data['secondSecret'] = SECONDSECRET
 		
 		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
-		f.write ('sleep 10\n')
+		f.write ('sleep 3\n')
 			
 	for y in log['accounts']:
 		if log['accounts'][y]['pending'] > MINPAYOUT:
@@ -103,7 +103,7 @@ def pool ():
 			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
 			log['accounts'][y]['received'] += log['accounts'][y]['pending']
 			log['accounts'][y]['pending'] = 0.0
-			f.write ('sleep 10\n')
+			f.write ('sleep 3\n')
 			
 	# Donations
 	if 'donations' in log:
@@ -115,7 +115,7 @@ def pool ():
 				data['secondSecret'] = SECONDSECRET
 			
 		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
-		f.write ('sleep 10\n')
+		f.write ('sleep 3\n')
 
 
 	f.close ()
