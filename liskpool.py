@@ -11,6 +11,7 @@ PERCENTAGE = 15
 MINPAYOUT = 0.2
 SECRET = "SECRET"
 SECONDSECRET = None
+COIN = "LISK"
 
 def loadLog ():
 	try:
@@ -30,14 +31,23 @@ def saveLog (log):
 
 
 def estimatePayouts (log):
-	uri = NODE + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + PUBKEY + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
-	d = requests.get (uri)
-	rew = d.json ()['rewards']
+	if COIN.lower () == 'ark':
+		uri = NODE + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + PUBKEY
+		d = requests.get (uri)
+		lf = log['lastforged']
+		rew = int (d.json ()['rewards']) 
+		log['lastforged'] = rew 
+		rew = lf - rew
+	else:
+		uri = NODE + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + PUBKEY + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
+		d = requests.get (uri)
+		rew = d.json ()['rewards']
+
 	forged = (int (rew) / 100000000) * PERCENTAGE / 100
-	print ('To distribute: %f LSK' % forged)
+	print ('To distribute: %f %s' % (forged, COIN))
 	
 	if forged < 0.1:
-		return []
+		return ([], log)
 		
 	d = requests.get (NODE + '/api/delegates/voters?publicKey=' + PUBKEY).json ()
 	
@@ -59,13 +69,13 @@ def estimatePayouts (log):
 		payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
 		#print (float (x['balance']) / 100000000, payouts [x['address']], x['address'])
 		
-	return payouts
+	return (payouts, log)
 	
 	
 def pool ():
 	log = loadLog ()
 	
-	topay = estimatePayouts(log)
+	(topay, log) = estimatePayouts (log)
 	
 	if len (topay) == 0:
 		print ('Nothing to distribute, exiting...')

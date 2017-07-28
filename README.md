@@ -13,11 +13,20 @@ Fork this repo; edit liskpool.py and modify the first lines with your settings:
 - NODE: the lisk node where you get forging info
 - NODEPAY: the lisk node used for payments
 - MINPAYOUT: the minimum amount for a payout
+- COIN: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
 
 Now edit docs/index.html and customize the webpage.
 
 Finally edit poollogs_example.json and put in lastpayout the unixtimestamp of your last payout or the
-date of pool starting; move poollogs_example.json to poollogs.json.
+date of pool starting; then move poollogs_example.json to poollogs.json.
+
+### Ark
+If you are using this software on ark, you should edit pollogs_example_ark.json and put:
+
+- lastpayout: the unixtimestamp of your last payout or the date of pool starting 
+- lastforged: the forged amount recorded in your last payout or the forged amount of pool starting
+
+then move poollogs_example_ark.json to poollogs.json.
 
 
 ## Running it
