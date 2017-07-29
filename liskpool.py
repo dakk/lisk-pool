@@ -37,7 +37,7 @@ def estimatePayouts (log):
 		lf = log['lastforged']
 		rew = int (d.json ()['rewards']) 
 		log['lastforged'] = rew 
-		rew = lf - rew
+		rew = rew - lf
 	else:
 		uri = NODE + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + PUBKEY + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
 		d = requests.get (uri)
