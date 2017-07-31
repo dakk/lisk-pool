@@ -124,8 +124,8 @@ def pool ():
 			if SECONDSECRET != None:
 				data['secondSecret'] = SECONDSECRET
 			
-		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
-		f.write ('sleep 3\n')
+			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
+			f.write ('sleep 3\n')
 
 
 	f.close ()
