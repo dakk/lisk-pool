@@ -50,7 +50,7 @@ def estimatePayouts (log):
 	payouts = []
 	
 	for x in d['accounts']:
-		if x['balance'] == '0' or x['address'] in log['skip']:
+		if x['balance'] == '0' or x['address'] in conf['skip']:
 			continue
 			
 		weight += float (x['balance']) / 100000000
@@ -58,7 +58,7 @@ def estimatePayouts (log):
 	print ('Total weight is: %f' % weight)
 	
 	for x in d['accounts']:
-		if int (x['balance']) == 0 or x['address'] in log['skip']:
+		if int (x['balance']) == 0 or x['address'] in conf['skip']:
 			continue
 			
 		payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
@@ -112,10 +112,10 @@ def pool ():
 			
 	# Donations
 	if 'donations' in log:
-		for y in log['donations']:
-			f.write ('echo Sending donation ' + str (log['donations'][y]) + ' to ' + y + '\n')
+		for y in conf['donations']:
+			f.write ('echo Sending donation ' + str (conf['donations'][y]) + ' to ' + y + '\n')
 				
-			data = { "secret": conf['secret'], "amount": int (log['donations'][y] * 100000000), "recipientId": y }
+			data = { "secret": conf['secret'], "amount": int (conf['donations'][y] * 100000000), "recipientId": y }
 			if conf['secondsecret'] != None:
 				data['secondSecret'] = conf['secondsecret']
 			

@@ -15,6 +15,8 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - nodepay: the lisk node used for payments
 - minpayout: the minimum amount for a payout
 - coin: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
+- skip: a list of address to skip
+- donations: a list of object (address: amount) for send static amount every payout
 
 Now edit docs/index.html and customize the webpage.
 
