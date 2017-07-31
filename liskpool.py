@@ -3,9 +3,21 @@ import json
 import sys
 import time
 
-
-conf = json.load (open ('config.json', 'r'))
-LOGFILE = 'poollogs.json'
+if len (sys.argv) > 2 and sys.argv [1] == '-c':
+	cfile = sys.argv [2]
+else:
+	cfile = 'config.json'
+	
+try:
+	conf = json.load (open (cfile, 'r'))
+except:
+	print ('Unable to load config file.')
+	sys.exit ()
+	
+if 'logfile' in conf:
+	LOGFILE = conf['logfile']
+else:
+	LOGFILE = 'poollogs.json'
 
 
 def loadLog ():

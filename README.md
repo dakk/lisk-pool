@@ -17,6 +17,7 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - coin: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
 - skip: a list of address to skip
 - donations: a list of object (address: amount) for send static amount every payout
+- logfile: file where you want to write pending and sent amounts
 
 Now edit docs/index.html and customize the webpage.
 
@@ -41,6 +42,10 @@ First install requests:
 Then start it:
 
 `python3 liskpool.py`
+
+or if you want to use another config file:
+
+`python3 liskpool.py -c config2.json`
 
 It produces a file "payments.sh" with all payments shell commands. Run this file with:
 
