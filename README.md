@@ -5,16 +5,16 @@ use this software: "2324852447570841050L" for lisk or "7725849364280821971S" for
 
 
 ## Configuration
-Fork this repo; edit liskpool.py and modify the first lines with your settings:
+Fork this repo; edit config.json and modify the first lines with your settings:
 
-- PUBKEY: your delegate pubkey
-- PERCENTAGE: percentage to distribute
-- SECRET: your secret
-- SECONDSECRET: your second secret or none if disabled
-- NODE: the lisk node where you get forging info
-- NODEPAY: the lisk node used for payments
-- MINPAYOUT: the minimum amount for a payout
-- COIN: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
+- pubkey: your delegate pubkey
+- percentage: percentage to distribute
+- secret: your secret
+- secondsecret: your second secret or null if disabled
+- node: the lisk node where you get forging info
+- nodepay: the lisk node used for payments
+- minpayout: the minimum amount for a payout
+- coin: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
 
 Now edit docs/index.html and customize the webpage.
 

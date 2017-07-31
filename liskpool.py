@@ -3,15 +3,10 @@ import json
 import sys
 import time
 
-NODE = "https://wallet.lisknode.io"
-NODEPAY = "http://localhost:8000"
-PUBKEY = "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4"
+
+conf = json.load (open ('config.json', 'r'))
 LOGFILE = 'poollogs.json'
-PERCENTAGE = 15
-MINPAYOUT = 0.2
-SECRET = "SECRET"
-SECONDSECRET = None
-COIN = "LISK"
+
 
 def loadLog ():
 	try:
@@ -31,25 +26,25 @@ def saveLog (log):
 
 
 def estimatePayouts (log):
-	if COIN.lower () == 'ark':
-		uri = NODE + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + PUBKEY
+	if conf['coin'].lower () == 'ark':
+		uri = conf['node'] + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + conf['pubkey']
 		d = requests.get (uri)
 		lf = log['lastforged']
 		rew = int (d.json ()['rewards']) 
 		log['lastforged'] = rew 
 		rew = rew - lf
 	else:
-		uri = NODE + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + PUBKEY + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
+		uri = conf['node'] + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + conf['pubkey'] + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
 		d = requests.get (uri)
 		rew = d.json ()['rewards']
 
-	forged = (int (rew) / 100000000) * PERCENTAGE / 100
-	print ('To distribute: %f %s' % (forged, COIN))
+	forged = (int (rew) / 100000000) * conf['percentage'] / 100
+	print ('To distribute: %f %s' % (forged, conf['coin']))
 	
 	if forged < 0.1:
 		return ([], log)
 		
-	d = requests.get (NODE + '/api/delegates/voters?publicKey=' + PUBKEY).json ()
+	d = requests.get (conf['node'] + '/api/delegates/voters?publicKey=' + conf['pubkey']).json ()
 	
 	weight = 0.0
 	payouts = []
@@ -86,7 +81,7 @@ def pool ():
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
 			log['accounts'][x['address']] = { 'pending': 0.0, 'received': 0.0 }
 			
-		if x['balance'] < MINPAYOUT and x['balance'] > 0.0:
+		if x['balance'] < conf['minpayout'] and x['balance'] > 0.0:
 			log['accounts'][x['address']]['pending'] += x['balance']
 			continue
 			
@@ -94,23 +89,23 @@ def pool ():
 		
 		f.write ('echo Sending ' + str (x['balance']) + ' to ' + x['address'] + '\n')
 		
-		data = { "secret": SECRET, "amount": int (x['balance'] * 100000000), "recipientId": x['address'] }
-		if SECONDSECRET != None:
-			data['secondSecret'] = SECONDSECRET
+		data = { "secret": conf['secret'], "amount": int (x['balance'] * 100000000), "recipientId": x['address'] }
+		if conf['secondsecret'] != None:
+			data['secondSecret'] = conf['secondsecret']
 		
-		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
+		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 		f.write ('sleep 3\n')
 			
 	for y in log['accounts']:
-		if log['accounts'][y]['pending'] > MINPAYOUT:
+		if log['accounts'][y]['pending'] > conf['minpayout']:
 			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
 			
 			
-			data = { "secret": SECRET, "amount": int (log['accounts'][y]['pending'] * 100000000), "recipientId": y }
-			if SECONDSECRET != None:
-				data['secondSecret'] = SECONDSECRET
+			data = { "secret": conf['secret'], "amount": int (log['accounts'][y]['pending'] * 100000000), "recipientId": y }
+			if conf['secondsecret'] != None:
+				data['secondSecret'] = conf['secondsecret']
 			
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
+			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 			log['accounts'][y]['received'] += log['accounts'][y]['pending']
 			log['accounts'][y]['pending'] = 0.0
 			f.write ('sleep 3\n')
@@ -120,11 +115,11 @@ def pool ():
 		for y in log['donations']:
 			f.write ('echo Sending donation ' + str (log['donations'][y]) + ' to ' + y + '\n')
 				
-			data = { "secret": SECRET, "amount": int (log['donations'][y] * 100000000), "recipientId": y }
-			if SECONDSECRET != None:
-				data['secondSecret'] = SECONDSECRET
+			data = { "secret": conf['secret'], "amount": int (log['donations'][y] * 100000000), "recipientId": y }
+			if conf['secondsecret'] != None:
+				data['secondSecret'] = conf['secondsecret']
 			
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + NODEPAY + "/api/transactions\n\n")
+			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 			f.write ('sleep 3\n')
 
 
