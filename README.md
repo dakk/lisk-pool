@@ -17,6 +17,7 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - coin: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
 - skip: a list of address to skip
 - donations: a list of object (address: amount) for send static amount every payout
+- donationspercentage: a list of object (address: percentage) for send static percentage every payout
 - logfile: file where you want to write pending and sent amounts
 
 Now edit docs/index.html and customize the webpage.

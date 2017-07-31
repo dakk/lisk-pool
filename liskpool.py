@@ -76,13 +76,13 @@ def estimatePayouts (log):
 		payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
 		#print (float (x['balance']) / 100000000, payouts [x['address']], x['address'])
 		
-	return (payouts, log)
+	return (payouts, log, forged)
 	
 	
 def pool ():
 	log = loadLog ()
 	
-	(topay, log) = estimatePayouts (log)
+	(topay, log, forged) = estimatePayouts (log)
 	
 	if len (topay) == 0:
 		print ('Nothing to distribute, exiting...')
@@ -123,7 +123,7 @@ def pool ():
 			f.write ('sleep 3\n')
 			
 	# Donations
-	if 'donations' in log:
+	if 'donations' in conf:
 		for y in conf['donations']:
 			f.write ('echo Sending donation ' + str (conf['donations'][y]) + ' to ' + y + '\n')
 				
@@ -134,6 +134,19 @@ def pool ():
 			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 			f.write ('sleep 3\n')
 
+	# Donation percentage
+	if 'donationspercentage' in conf:
+		for y in conf['donationspercentage']:
+			am = (forged * conf['donationspercentage'][y]) / 100
+			
+			f.write ('echo Sending donation ' + str (conf['donationspercentage'][y]) + '% (' + str (am) + 'LSK) to ' + y + '\n')
+				
+			data = { "secret": conf['secret'], "amount": int (am * 100000000), "recipientId": y }
+			if conf['secondsecret'] != None:
+				data['secondSecret'] = conf['secondsecret']
+			
+			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
+			f.write ('sleep 3\n')
 
 	f.close ()
 	
