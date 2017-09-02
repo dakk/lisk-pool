@@ -9,7 +9,8 @@
 	"secret": "SECRET",
 	"secondsecret": null,
     "donations": {
-		"7702627792787017504L": 100
+		"7702627792787017504L": 150,
+		"13861531827625059307L": 50
     },
     "donationspercentage": {
     },
