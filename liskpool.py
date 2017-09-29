@@ -37,10 +37,10 @@ if args.minpayout != None:
 
 
 # Fix the node address if it ends with a /
-if (conf['node'][-1] == '/')
+if conf['node'][-1] == '/':
 	conf['node'] = conf['node'][:-1]
 
-if (conf['nodepay'][-1] == '/')
+if conf['nodepay'][-1] == '/':
 	conf['nodepay'] = conf['nodepay'][:-1]
 
 
