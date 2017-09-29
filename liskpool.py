@@ -90,28 +90,40 @@ def pool ():
 		
 	f = open ('payments.sh', 'w')
 	for x in topay:
+		# Create the row if not present
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
 			log['accounts'][x['address']] = { 'pending': 0.0, 'received': 0.0 }
+
+		# Check if the voter has a pending balance
+		pending = 0
+		if x['address'] in log['accounts']:
+			pending = log['accounts'][x['address']]['pending']
 			
-		if x['balance'] < conf['minpayout'] and x['balance'] > 0.0:
+		# If below minpayout, put in the accoutns pending and skip
+		if (x['balance'] + pending) < conf['minpayout'] and x['balance'] > 0.0:
 			log['accounts'][x['address']]['pending'] += x['balance']
 			continue
 			
-		log['accounts'][x['address']]['received'] += x['balance']	
+		# If above, update the received balance and write the payout line
+		log['accounts'][x['address']]['received'] += (x['balance'] + pending)
+		if pending > 0:
+			log['accounts'][x['address']]['pending'] = 0
 		
-		f.write ('echo Sending ' + str (x['balance']) + ' to ' + x['address'] + '\n')
+
+		f.write ('echo Sending ' + str (x['balance']) + ' (+' + str (pending) + ' pending) to ' + x['address'] + '\n')
 		
-		data = { "secret": conf['secret'], "amount": int (x['balance'] * 100000000), "recipientId": x['address'] }
+		data = { "secret": conf['secret'], "amount": int ((x['balance'] + pending) * 100000000), "recipientId": x['address'] }
 		if conf['secondsecret'] != None:
 			data['secondSecret'] = conf['secondsecret']
 		
 		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 		f.write ('sleep 3\n')
 			
+	# Handle pending balances
 	for y in log['accounts']:
+		# If the pending is above the minpayout, create the payout line
 		if log['accounts'][y]['pending'] > conf['minpayout']:
 			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
-			
 			
 			data = { "secret": conf['secret'], "amount": int (log['accounts'][y]['pending'] * 100000000), "recipientId": y }
 			if conf['secondsecret'] != None:
@@ -150,6 +162,7 @@ def pool ():
 
 	f.close ()
 	
+	# Update last payout
 	log['lastpayout'] = int (time.time ())
 	
 	print (json.dumps (log, indent=4, separators=(',', ': ')))
