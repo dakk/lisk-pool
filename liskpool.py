@@ -134,7 +134,7 @@ def pool ():
 			log['accounts'][x['address']]['pending'] = 0
 		
 
-		f.write ('echo Sending ' + str (x['balance']) + ' (+' + str (pending) + ' pending) to ' + x['address'] + '\n')
+		f.write ('echo Sending ' + str (x['balance']) + ' \(+' + str (pending) + ' pending\) to ' + x['address'] + '\n')
 		
 		data = { "secret": conf['secret'], "amount": int ((x['balance'] + pending) * 100000000), "recipientId": x['address'] }
 		if conf['secondsecret'] != None:
