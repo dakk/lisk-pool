@@ -69,6 +69,30 @@ There is also a 'batch.sh' file which run liskpool, then payments.sh and copy th
 in the docs folder.
 
 
+### Avoid vote hoppers
+
+In some DPOS, some voters switch their voting weight from one delegate to another for
+receiving payout from multiple pools. A solution for that is the following flow:
+
+1. Run liskpool.py every hour with --min-payout=1000000 (a very high minpayout, so no payouts will be done but the pending will be updated)
+2. Run liskpool.py normally to broadcast the payments
+
+
+## Command line usage
+
+```
+usage: liskpool.py [-h] [-c config.json] [-y] [--min-payout MINPAYOUT]
+
+DPOS delegate pool script
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c config.json        set a config file (default: config.json)
+  -y                    automatic yes for log saving (default: no)
+  --min-payout MINPAYOUT
+                        override the minpayout value from config file
+```
+
 ## License
 Copyright 2017 Davide Gessa
 

@@ -2,14 +2,24 @@ import requests
 import json
 import sys
 import time
+import argparse 
 
-if len (sys.argv) > 2 and sys.argv [1] == '-c':
-	cfile = sys.argv [2]
-else:
-	cfile = 'config.json'
+
+parser = argparse.ArgumentParser(description='DPOS delegate pool script')
+parser.add_argument('-c', metavar='config.json', dest='cfile', action='store',
+                   default='config.json',
+                   help='set a config file (default: config.json)')
+parser.add_argument('-y', dest='alwaysyes', action='store_const',
+                   default=False, const=True,
+                   help='automatic yes for log saving (default: no)')
+parser.add_argument('--min-payout', type=float, dest='minpayout', action='store',
+                   default=None,
+                   help='override the minpayout value from config file')
+
+args = parser.parse_args ()
 	
 try:
-	conf = json.load (open (cfile, 'r'))
+	conf = json.load (open (args.cfile, 'r'))
 except:
 	print ('Unable to load config file.')
 	sys.exit ()
@@ -18,6 +28,9 @@ if 'logfile' in conf:
 	LOGFILE = conf['logfile']
 else:
 	LOGFILE = 'poollogs.json'
+
+if args.minpayout != None:
+	conf['minpayout'] = args.minpayout
 
 
 def loadLog ():
@@ -167,7 +180,7 @@ def pool ():
 	
 	print (json.dumps (log, indent=4, separators=(',', ': ')))
 	
-	if len (sys.argv) > 1 and sys.argv[1] == '-y':
+	if args.alwaysyes:
 		print ('Saving...')
 		saveLog (log)
 	else:
