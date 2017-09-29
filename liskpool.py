@@ -4,7 +4,7 @@ import sys
 import time
 import argparse 
 
-
+# Parse command line args
 parser = argparse.ArgumentParser(description='DPOS delegate pool script')
 parser.add_argument('-c', metavar='config.json', dest='cfile', action='store',
                    default='config.json',
@@ -18,6 +18,7 @@ parser.add_argument('--min-payout', type=float, dest='minpayout', action='store'
 
 args = parser.parse_args ()
 	
+# Load the config file
 try:
 	conf = json.load (open (args.cfile, 'r'))
 except:
@@ -29,8 +30,18 @@ if 'logfile' in conf:
 else:
 	LOGFILE = 'poollogs.json'
 
+
+# Override minpayout from command line arg
 if args.minpayout != None:
 	conf['minpayout'] = args.minpayout
+
+
+# Fix the node address if it ends with a /
+if (conf['node'][-1] == '/')
+	conf['node'] = conf['node'][:-1]
+
+if (conf['nodepay'][-1] == '/')
+	conf['nodepay'] = conf['nodepay'][:-1]
 
 
 def loadLog ():
