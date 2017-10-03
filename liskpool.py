@@ -4,6 +4,10 @@ import sys
 import time
 import argparse 
 
+if sys.version_info[0] < 3:
+	print ('python2 not supported, please use python3')
+	sys.exit (0)
+
 # Parse command line args
 parser = argparse.ArgumentParser(description='DPOS delegate pool script')
 parser.add_argument('-c', metavar='config.json', dest='cfile', action='store',
@@ -78,7 +82,7 @@ def estimatePayouts (log):
 	print ('To distribute: %f %s' % (forged, conf['coin']))
 	
 	if forged < 0.1:
-		return ([], log)
+		return ([], log, 0.0)
 		
 	d = requests.get (conf['node'] + '/api/delegates/voters?publicKey=' + conf['pubkey']).json ()
 	
