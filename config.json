@@ -7,8 +7,9 @@
 	"logfile": "poollogs.json",
 	"minpayout": 0.2,
 	"secret": "SECRET",
-	"secondsecret": null,
+	"secondsecret": "SECRET2",
     "donations": {
+		"13861531827625059307L": 25,
 		"7702627792787017504L": 150
     },
     "donationspercentage": {
