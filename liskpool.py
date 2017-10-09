@@ -111,10 +111,6 @@ def pool ():
 	log = loadLog ()
 	
 	(topay, log, forged) = estimatePayouts (log)
-	
-	if len (topay) == 0:
-		print ('Nothing to distribute, exiting...')
-		return
 		
 	f = open ('payments.sh', 'w')
 	for x in topay:
