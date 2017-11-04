@@ -19,6 +19,7 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - donations: a list of object (address: amount) for send static amount every payout
 - donationspercentage: a list of object (address: percentage) for send static percentage every payout
 - logfile: file where you want to write pending and sent amounts
+- feededuct: true if you want to subtract fees from user payouts
 
 Now edit docs/index.html and customize the webpage.
 
