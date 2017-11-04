@@ -35,7 +35,7 @@ else:
 	LOGFILE = 'poollogs.json'
 
 fees = 0.0
-if conf['feededuct']:
+if 'feededuct' in conf and conf['feededuct']:
 	fees = 0.1
 
 # Override minpayout from command line arg
