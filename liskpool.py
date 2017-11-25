@@ -192,7 +192,8 @@ def pool ():
 	# Update last payout
 	log['lastpayout'] = int (time.time ())
 	
-	print (json.dumps (log, indent=4, separators=(',', ': ')))
+	for acc in log['accounts']:
+		print (acc, '\tPending:', log['accounts'][acc]['pending'], '\tReceived:', log['accounts'][acc]['received'])
 	
 	if args.alwaysyes:
 		print ('Saving...')
