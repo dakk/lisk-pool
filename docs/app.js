@@ -9,11 +9,14 @@ app.controller('indexCtrl', function($scope, $http) {
         $scope.lastpayout = res.data.lastpayout * 1000;
         $scope.nextpayout = moment ($scope.lastpayout).add (1, 'week').valueOf();
         $scope.accounts = [];
+        $scope.total = { paid: 0.0, pending: 0.0 };
 
         for (addr in res.data.accounts) {
             var it = res.data.accounts[addr];
             it['address'] = addr;
             $scope.accounts.push (it);
+            $scope.total.paid += res.data.accounts[addr].received;
+            $scope.total.pending += res.data.accounts[addr].pending;
         }
     });
 
