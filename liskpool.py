@@ -144,7 +144,7 @@ def pool ():
 			data['secondSecret'] = conf['secondsecret']
 		
 		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
-		f.write ('sleep 3\n')
+		f.write ('sleep 1\n')
 			
 	# Handle pending balances
 	for y in log['accounts']:
@@ -159,7 +159,7 @@ def pool ():
 			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 			log['accounts'][y]['received'] += log['accounts'][y]['pending']
 			log['accounts'][y]['pending'] = 0.0
-			f.write ('sleep 3\n')
+			f.write ('sleep 1\n')
 			
 	# Donations
 	if 'donations' in conf:
@@ -171,7 +171,7 @@ def pool ():
 				data['secondSecret'] = conf['secondsecret']
 			
 			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
-			f.write ('sleep 3\n')
+			f.write ('sleep 1\n')
 
 	# Donation percentage
 	if 'donationspercentage' in conf:
@@ -185,7 +185,7 @@ def pool ():
 				data['secondSecret'] = conf['secondsecret']
 			
 			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
-			f.write ('sleep 3\n')
+			f.write ('sleep 1\n')
 
 	f.close ()
 	
