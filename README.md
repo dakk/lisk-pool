@@ -38,7 +38,7 @@ Also, replace docs/index.html with docs/index.ark.html
 
 ## Running it
 
-First install clone and install requests:
+First clone the lisk-pool repository and install requests:
 
 `git clone https://github.com/dakk/lisk-pool`
 
