@@ -1,6 +1,6 @@
 {
 	"coin": "LISK",
-	"node": "https://wallet.lisknode.io",
+	"node": "http://localhost:8000",
 	"nodepay": "http://localhost:8000",
 	"pubkey": "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4",
 	"percentage": 15,
