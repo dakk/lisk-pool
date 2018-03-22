@@ -40,25 +40,29 @@ Also, replace docs/index.html with docs/index.ark.html
 
 First clone the lisk-pool repository and install requests:
 
-`git clone https://github.com/dakk/lisk-pool`
+```git clone https://github.com/dakk/lisk-pool```
 
-`cd lisk-pool`
+```cd lisk-pool```
 
 ```apt-get install python3-pip```
 
-`pip3 install requests`
+```pip3 install requests```
+
+If you are using lisk 1.0.0 you need to install lisky:
+
+```npm install lisky```
 
 Then start it:
 
-`python3 liskpool.py`
+```python3 liskpool.py```
 
 or if you want to use another config file:
 
-`python3 liskpool.py -c config2.json`
+```python3 liskpool.py -c config2.json```
 
 It produces a file "payments.sh" with all payments shell commands. Run this file with:
 
-`bash payments.sh`
+```bash payments.sh```
 
 The payments will be broadcasted (every 10 seconds). At the end you can move your generated
 poollogs.json to docs/poollogs.json and send the update to your git repo.
@@ -99,6 +103,12 @@ optional arguments:
   --min-payout MINPAYOUT
                         override the minpayout value from config file
 ```
+
+## Lisk 1.0.0 migration
+
+Since Lisk version 1.0.0, APIs with secret used for creating transaction are not available 
+anymore, so we need to create and sign transactions client-side. To do this, you need to
+install lisky, lisk-pool will automatically use it in payments.sh.
 
 ## License
 Copyright 2017 Davide Gessa

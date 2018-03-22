@@ -4,6 +4,9 @@ import sys
 import time
 import argparse 
 
+LISKY_PATH = "./node_modules/.bin/lisky"
+ENABLE_LISK_1 = False
+
 if sys.version_info[0] < 3:
 	print ('python2 not supported, please use python3')
 	sys.exit (0)
@@ -66,7 +69,21 @@ def loadLog ():
 def saveLog (log):
 	json.dump (log, open (LOGFILE, 'w'), indent=4, separators=(',', ': '))
 	
+def createPaymentLine (to, amount):
+	data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
+	if conf['secondsecret'] != None:
+		data['secondSecret'] = conf['secondsecret']
 
+	if conf['coin'] == 'LISK' and ENABLE_LISK_1:
+		liskyline = LISKY_PATH + ' create trasaction transfer ' + str (amount) + ' --passphrase \'pass:' + conf['secret'] + '\''
+		if conf['secondsecret'] != None:
+			liskyline += ' --second-passphrase \'pass:' + conf['secondsecret'] + '\''
+
+		# TODO: we don't know which API accept this data
+		return 'curl -k -H  "Content-Type: application/json" -X POST -d \'' + json.dumps (liskyline) + '\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
+	else:	
+		return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
+			
 
 def estimatePayouts (log):
 	if conf['coin'].lower () == 'ark' or conf['coin'].lower () == 'kapu' :
@@ -138,54 +155,35 @@ def pool ():
 		
 
 		f.write ('echo Sending ' + str (x['balance'] - fees) + ' \(+' + str (pending) + ' pending\) to ' + x['address'] + '\n')
-		
-		data = { "secret": conf['secret'], "amount": int ((x['balance'] + pending - fees) * 100000000), "recipientId": x['address'] }
-		if conf['secondsecret'] != None:
-			data['secondSecret'] = conf['secondsecret']
-		
-		f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
-		f.write ('sleep 1\n')
+		f.write (createPaymentLine (x['address'], x['balance'] + pending - fees))
+
 			
 	# Handle pending balances
 	for y in log['accounts']:
 		# If the pending is above the minpayout, create the payout line
 		if log['accounts'][y]['pending'] - fees > conf['minpayout']:
 			f.write ('echo Sending pending ' + str (log['accounts'][y]['pending']) + ' to ' + y + '\n')
+			f.write (createPaymentLine (y, log['accounts'][y]['pending'] - fees))
 			
-			data = { "secret": conf['secret'], "amount": int ((log['accounts'][y]['pending'] - fees) * 100000000), "recipientId": y }
-			if conf['secondsecret'] != None:
-				data['secondSecret'] = conf['secondsecret']
-			
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
 			log['accounts'][y]['received'] += log['accounts'][y]['pending']
 			log['accounts'][y]['pending'] = 0.0
-			f.write ('sleep 1\n')
+			
 			
 	# Donations
 	if 'donations' in conf:
 		for y in conf['donations']:
 			f.write ('echo Sending donation ' + str (conf['donations'][y]) + ' to ' + y + '\n')
-				
-			data = { "secret": conf['secret'], "amount": int (conf['donations'][y] * 100000000), "recipientId": y }
-			if conf['secondsecret'] != None:
-				data['secondSecret'] = conf['secondsecret']
-			
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
-			f.write ('sleep 1\n')
+			f.write (createPaymentLine (y, conf['donations'][y]))
+
 
 	# Donation percentage
 	if 'donationspercentage' in conf:
 		for y in conf['donationspercentage']:
 			am = (forged * conf['donationspercentage'][y]) / 100
 			
-			f.write ('echo Sending donation ' + str (conf['donationspercentage'][y]) + '% \(' + str (am) + 'LSK\) to ' + y + '\n')
-				
-			data = { "secret": conf['secret'], "amount": int (am * 100000000), "recipientId": y }
-			if conf['secondsecret'] != None:
-				data['secondSecret'] = conf['secondsecret']
-			
-			f.write ('curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\n")
-			f.write ('sleep 1\n')
+			f.write ('echo Sending donation ' + str (conf['donationspercentage'][y]) + '% \(' + str (am) + 'LSK\) to ' + y + '\n')	
+			f.write (createPaymentLine (y, am))
+
 
 	f.close ()
 	
