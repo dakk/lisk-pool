@@ -75,12 +75,13 @@ def createPaymentLine (to, amount):
 		data['secondSecret'] = conf['secondsecret']
 
 	if conf['coin'] == 'LISK' and ENABLE_LISK_1:
-		liskyline = LISKY_PATH + ' create trasaction transfer ' + str (amount) + ' --passphrase \'pass:' + conf['secret'] + '\''
+		liskyline = LISKY_PATH + ' create trasaction transfer -j --passphrase \'pass:' + conf['secret'] + '\''
 		if conf['secondsecret'] != None:
 			liskyline += ' --second-passphrase \'pass:' + conf['secondsecret'] + '\''
-
+		liskyline += ' ' + str (amount) + ' ' + to
+		
 		# TODO: we don't know which API accept this data
-		return 'curl -k -H  "Content-Type: application/json" -X POST -d \'' + json.dumps (liskyline) + '\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
+		return 'curl -k -H  "Content-Type: application/json" -X POST -d \'`' + liskyline + '`\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
 	else:	
 		return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
 			
