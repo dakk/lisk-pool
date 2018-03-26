@@ -20,13 +20,17 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - donationspercentage: a list of object (address: percentage) for send static percentage every payout
 - logfile: file where you want to write pending and sent amounts
 - feededuct: true if you want to subtract fees from user payouts
-- private: true if it's a private pool (will only pay whitelisted addresses)
-- whitelist: list of private pool addresses
 
 Now edit docs/index.html and customize the webpage.
 
 Finally edit poollogs_example.json and put in lastpayout the unixtimestamp of your last payout or the
 date of pool starting; then move poollogs_example.json to poollogs.json.
+
+### Private pool
+If you want to run a private pool, you need to edit config.json and:
+
+- private: set to true
+- whitelist: put a list of address you wish to include
 
 ### Ark & Kapu
 If you are using this software on ark, you should edit pollogs_example_ark.json and put:
