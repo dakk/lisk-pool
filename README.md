@@ -20,6 +20,8 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - donationspercentage: a list of object (address: percentage) for send static percentage every payout
 - logfile: file where you want to write pending and sent amounts
 - feededuct: true if you want to subtract fees from user payouts
+- private: true if it's a private pool (will only pay whitelisted addresses)
+- whitelist: list of private pool addresses
 
 Now edit docs/index.html and customize the webpage.
 
@@ -111,7 +113,7 @@ anymore, so we need to create and sign transactions client-side. To do this, you
 install lisky, lisk-pool will automatically use it in payments.sh.
 
 ## License
-Copyright 2017 Davide Gessa
+Copyright 2017-2018 Davide Gessa
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
