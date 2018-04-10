@@ -4,8 +4,8 @@ import sys
 import time
 import argparse 
 
-LISKY_PATH = "./node_modules/.bin/lisky"
-ENABLE_LISK_1 = False
+LISKY_PATH = "lisky"
+ENABLE_VERSION_1 = False
 
 if sys.version_info[0] < 3:
 	print ('python2 not supported, please use python3')
@@ -70,19 +70,23 @@ def saveLog (log):
 	json.dump (log, open (LOGFILE, 'w'), indent=4, separators=(',', ': '))
 	
 def createPaymentLine (to, amount):
-	data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
-	if conf['secondsecret'] != None:
-		data['secondSecret'] = conf['secondsecret']
-
-	if conf['coin'] == 'LISK' and ENABLE_LISK_1:
+	if (conf['coin'] == 'LISK' or conf['coin'] == 'RISE') and ENABLE_VERSION_1:
 		liskyline = LISKY_PATH + ' create trasaction transfer -j --passphrase \'pass:' + conf['secret'] + '\''
 		if conf['secondsecret'] != None:
 			liskyline += ' --second-passphrase \'pass:' + conf['secondsecret'] + '\''
-		liskyline += ' ' + str (amount) + ' ' + to
+		
+		if conf['coin'] == 'RISE':
+			liskyline += ' ' + str (amount) + ' ' + to
+		else:
+			liskyline += ' ' + str (amount) + ' ' + to.replace('R', 'L')
 		
 		# TODO: we don't know which API accept this data
 		return 'curl -k -H  "Content-Type: application/json" -X POST -d \'`' + liskyline + '`\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
 	else:	
+		data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
+		if conf['secondsecret'] != None:
+			data['secondSecret'] = conf['secondsecret']
+
 		return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
 			
 

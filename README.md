@@ -110,11 +110,25 @@ optional arguments:
                         override the minpayout value from config file
 ```
 
-## Lisk 1.0.0 migration
+## Lisk 1.0.0 and Rise 1.0.0 migration
 
-Since Lisk version 1.0.0, APIs with secret used for creating transaction are not available 
-anymore, so we need to create and sign transactions client-side. To do this, you need to
-install lisky, lisk-pool will automatically use it in payments.sh.
+Since Lisk version 1.0.0 and Rise version 1.0.0, APIs with secret used for creating 
+transaction are not available anymore, so we need to create and sign transactions 
+client-side. To do this, you need to install lisky, lisk-pool will automatically 
+use it in payments.sh.
+
+To install lisky you should run this command:
+
+```bash
+sudo npm install -g lisky
+```
+
+Since this version is not yet the default, you should edit liskpool.py and set
+the variable ENABLE_VERSION_1 to true:
+
+```python
+ENABLE_VERSION_1 = True
+```
 
 ## License
 Copyright 2017-2018 Davide Gessa
