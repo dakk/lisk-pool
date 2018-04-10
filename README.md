@@ -54,7 +54,7 @@ First clone the lisk-pool repository and install requests:
 
 ```pip3 install requests```
 
-If you are using lisk 1.0.0 you need to install lisky:
+If you are using lisk 1.0.0 or rise 1.0.0 you need to install lisky:
 
 ```npm install lisky```
 
