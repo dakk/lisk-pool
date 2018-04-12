@@ -4,7 +4,6 @@ import sys
 import time
 import argparse 
 
-LISKY_PATH = "lisky"
 ENABLE_VERSION_1 = False
 
 if sys.version_info[0] < 3:
@@ -70,24 +69,15 @@ def saveLog (log):
 	json.dump (log, open (LOGFILE, 'w'), indent=4, separators=(',', ': '))
 	
 def createPaymentLine (to, amount):
-	if (conf['coin'] == 'LISK' or conf['coin'] == 'RISE') and ENABLE_VERSION_1:
-		liskyline = LISKY_PATH + ' create trasaction transfer -j --passphrase \'pass:' + conf['secret'] + '\''
-		if conf['secondsecret'] != None:
-			liskyline += ' --second-passphrase \'pass:' + conf['secondsecret'] + '\''
-		
-		if conf['coin'] == 'RISE':
-			liskyline += ' ' + str (amount) + ' ' + to
-		else:
-			liskyline += ' ' + str (amount) + ' ' + to.replace('R', 'L')
-		
-		# TODO: we don't know which API accept this data
-		return 'curl -k -H  "Content-Type: application/json" -X POST -d \'`' + liskyline + '`\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
-	else:	
-		data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
-		if conf['secondsecret'] != None:
-			data['secondSecret'] = conf['secondsecret']
+	data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
+	if conf['secondsecret'] != None:
+		data['secondSecret'] = conf['secondsecret']
 
-		return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + conf['nodepay'] + "/api/transactions\n\nsleep 1\n"
+	nodepay = conf['nodepay']
+	if ENABLE_VERSION_1:
+		nodepay = 'http://localhost:6990'
+
+	return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 1\n"
 			
 
 def estimatePayouts (log):
@@ -144,6 +134,12 @@ def pool ():
 	(topay, log, forged) = estimatePayouts (log)
 		
 	f = open ('payments.sh', 'w')
+
+	if ENABLE_VERSION_1:
+		f.write ("echo Starting dpos-api-fallback\n")
+		f.write ("node dpos-api-fallback/dist/index.js start -n " + conf['nodepay'] + " -s " + conf['coin'][0] + "&\n")
+		f.write ("sleep 4\n")
+
 	for x in topay:
 		# Create the row if not present
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
@@ -195,7 +191,8 @@ def pool ():
 			f.write ('echo Sending donation ' + str (conf['donationspercentage'][y]) + '% \(' + str (am) + 'LSK\) to ' + y + '\n')	
 			f.write (createPaymentLine (y, am))
 
-
+	if ENABLE_VERSION_1:
+		f.write ("killall node\n")
 	f.close ()
 	
 	# Update last payout

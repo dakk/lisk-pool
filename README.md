@@ -54,9 +54,14 @@ First clone the lisk-pool repository and install requests:
 
 ```pip3 install requests```
 
-If you are using lisk 1.0.0 or rise 1.0.0 you need to install lisky:
+If you are using lisk 1.0.0 or rise 1.0.0 you need to dpos-api-fallback:
 
-```npm install lisky```
+```bash
+git clone https://github.com/vekexasia/dpos-api-fallback
+cd dpos-api-fallback
+npm install
+npm run package
+```
 
 Then start it:
 
