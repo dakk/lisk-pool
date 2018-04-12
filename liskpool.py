@@ -138,6 +138,7 @@ def pool ():
 	if ENABLE_VERSION_1:
 		f.write ("echo Starting dpos-api-fallback\n")
 		f.write ("node dpos-api-fallback/dist/index.js start -n " + conf['nodepay'] + " -s " + conf['coin'][0] + "&\n")
+		f.write ("DPOSFALLBACK_PID=$!\n")
 		f.write ("sleep 4\n")
 
 	for x in topay:
@@ -192,7 +193,7 @@ def pool ():
 			f.write (createPaymentLine (y, am))
 
 	if ENABLE_VERSION_1:
-		f.write ("killall node\n")
+		f.write ("kill $DPOSFALLBACK_PID\n")
 	f.close ()
 	
 	# Update last payout
