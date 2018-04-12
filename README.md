@@ -1,7 +1,10 @@
 # Lisk pool distribution software
 This software is created by lisk delegate "dakk", please consider a small donation if you
-use this software: "2324852447570841050L" for lisk or "7725849364280821971S" for shift or
-"AZAXtswaWS4v8eYMzJRjpd5pN3wMBj8Rmk" for ark.
+use this software: 
+- "2324852447570841050L" for lisk
+- "7725849364280821971S" for shift
+- "AZAXtswaWS4v8eYMzJRjpd5pN3wMBj8Rmk" for ark
+- "8691988869124917015R" for rise
 
 
 ## Configuration
@@ -118,7 +121,8 @@ optional arguments:
 ## Lisk 1.0.0 and Rise 1.0.0 migration
 
 Since Lisk version 1.0.0 and Rise version 1.0.0, APIs with secret used for creating 
-transaction are not available anymore, so we need to use the dpos-api-fallback.
+transaction are not available anymore, so we need to use the dpos-api-fallback
+(a special thanks for vekexasia who made this tool).
 
 Since this version is not yet the default, you should edit liskpool.py and set
 the variable ENABLE_VERSION_1 to true:
