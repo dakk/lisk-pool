@@ -122,7 +122,18 @@ optional arguments:
 
 Since Lisk version 1.0.0 and Rise version 1.0.0, APIs with secret used for creating 
 transaction are not available anymore, so we need to use the dpos-api-fallback
-(a special thanks for vekexasia who made this tool).
+(a special thanks for vekexasia who made this tool). 
+
+First, update the lisk-pool source, then install dpos-api-fallback inside the lisk-pool
+directory:
+
+```bash
+cd lisk-pool
+git clone https://github.com/vekexasia/dpos-api-fallback
+cd dpos-api-fallback
+npm install
+npm run package
+```
 
 Since this version is not yet the default, you should edit liskpool.py and set
 the variable ENABLE_VERSION_1 to true:
