@@ -135,7 +135,7 @@ npm install
 npm run package
 ```
 
-**node >= 6 is mandatory for running dpos-api-fallback!**
+**nodejs >= 6 is mandatory for running dpos-api-fallback!**
 
 Since this version is not yet the default, you should edit liskpool.py and set
 the variable ENABLE_VERSION_1 to true:
