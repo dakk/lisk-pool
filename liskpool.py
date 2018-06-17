@@ -137,7 +137,7 @@ def pool ():
 
 	if ENABLE_VERSION_1:
 		SUFFIX = conf['coin'][0]
-		if (conf['coin'] == 'OXY' || conf['coin'] == 'OXYCOIN')
+		if conf['coin'] == 'OXY' or conf['coin'] == 'OXYCOIN':
 			SUFFIX = 'X'
 
 		f.write ("echo Starting dpos-api-fallback\n")
