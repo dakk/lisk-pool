@@ -108,7 +108,7 @@ def estimatePayouts (log):
 		if x['balance'] == '0' or x['address'] in conf['skip']:
 			continue
 
-		if conf['private'] and not (x['address'] in conf['whitelist']):
+		if 'private' in conf and conf['private'] and not (x['address'] in conf['whitelist']):
 			continue
 			
 		weight += float (x['balance']) / 100000000
@@ -119,7 +119,7 @@ def estimatePayouts (log):
 		if int (x['balance']) == 0 or x['address'] in conf['skip']:
 			continue
 			
-		if conf['private'] and not (x['address'] in conf['whitelist']):
+		if 'private' in conf and conf['private'] and not (x['address'] in conf['whitelist']):
 			continue
 
 		payouts.append ({ "address": x['address'], "balance": (float (x['balance']) / 100000000 * forged) / weight})
