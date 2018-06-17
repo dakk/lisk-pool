@@ -17,7 +17,7 @@ Fork this repo; edit config.json and modify the first lines with your settings:
 - node: the lisk node where you get forging info
 - nodepay: the lisk node used for payments
 - minpayout: the minimum amount for a payout
-- coin: the name of the coin (LISK, ARK, SHIFT, RISE, or whatever you want)
+- coin: the name of the coin (LISK, ARK, SHIFT, RISE, KAPU, OXY or whatever you want)
 - skip: a list of address to skip
 - donations: a list of object (address: amount) for send static amount every payout
 - donationspercentage: a list of object (address: percentage) for send static percentage every payout
@@ -118,9 +118,9 @@ optional arguments:
                         override the minpayout value from config file
 ```
 
-## Lisk 1.0.0, Rise 1.0.0 and Oxy 1.0.0 migration
+## Lisk 1.0.0 (still WIP), Rise 1.0.0 and Oxy 1.0.0 migration
 
-Since Lisk version 1.0.0, Rise version 1.0.0 and Oxy version 1.0.0, APIs with secret used for creating 
+Since Lisk version 1.0.0 (still WIP), Rise version 1.0.0 and Oxy version 1.0.0, APIs with secret used for creating 
 transaction are not available anymore, so we need to use the dpos-api-fallback
 (a special thanks for vekexasia who made this tool). 
 
