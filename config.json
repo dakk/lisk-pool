@@ -3,6 +3,7 @@
 	"node": "http://localhost:8000",
 	"nodepay": "http://localhost:8000",
 	"pubkey": "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4",
+	"address": "2324852447570841050L",
 	"percentage": 15,
 	"logfile": "poollogs.json",
 	"minpayout": 1.0,

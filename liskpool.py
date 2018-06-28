@@ -4,6 +4,7 @@ import sys
 import time
 import argparse 
 
+
 ENABLE_VERSION_1 = False
 
 if sys.version_info[0] < 3:
@@ -88,6 +89,10 @@ def estimatePayouts (log):
 		rew = int (d.json ()['rewards']) 
 		log['lastforged'] = rew 
 		rew = rew - lf
+	elif conf['coin'].lower () == 'lisk' and ENABLE_VERSION_1:
+		uri = conf['node'] + '/api/delegates/' + conf['address'] + '/forging_statistics?&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
+		d = requests.get (uri)
+		rew = d.json ()['data']['rewards']
 	else:
 		uri = conf['node'] + '/api/delegates/forging/getForgedByAccount?generatorPublicKey=' + conf['pubkey'] + '&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
 		d = requests.get (uri)
@@ -99,7 +104,11 @@ def estimatePayouts (log):
 	if forged < 0.1:
 		return ([], log, 0.0)
 		
-	d = requests.get (conf['node'] + '/api/delegates/voters?publicKey=' + conf['pubkey']).json ()
+	if conf['coin'].lower () == 'lisk' and ENABLE_VERSION_1:
+		d = requests.get (conf['node'] + '/api/voters?address=' + conf['address']).json ()['data']['voters']
+		d = { "accounts": d }
+	else:
+		d = requests.get (conf['node'] + '/api/delegates/voters?publicKey=' + conf['pubkey']).json ()
 	
 	weight = 0.0
 	payouts = []

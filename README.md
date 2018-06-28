@@ -11,6 +11,7 @@ use this software:
 Fork this repo; edit config.json and modify the first lines with your settings:
 
 - pubkey: your delegate pubkey
+- address: your delegate address
 - percentage: percentage to distribute
 - secret: your secret
 - secondsecret: your second secret or null if disabled
@@ -124,7 +125,7 @@ Since Lisk version 1.0.0 (still WIP), Rise version 1.0.0 and Oxy version 1.0.0, 
 transaction are not available anymore, so we need to use the dpos-api-fallback
 (a special thanks for vekexasia who made this tool). 
 
-First, update the lisk-pool source, then install dpos-api-fallback inside the lisk-pool
+First, update the lisk-pool source, update the config.json with new fields, then install dpos-api-fallback inside the lisk-pool
 directory:
 
 ```bash
