@@ -147,8 +147,10 @@ def pool ():
 	if ENABLE_VERSION_1:
 		SUFFIX = conf['coin'][0]
 		if conf['coin'] == 'OXY' or conf['coin'] == 'OXYCOIN':
-			SUFFIX = 'X'
-
+			SUFFIX = 'X'               
+		if conf['coin'] == 'LISK':
+                        SUFFIX = 'L'
+		
 		f.write ("echo Starting dpos-api-fallback\n")
 		f.write ("node dpos-api-fallback/dist/index.js start -n " + conf['nodepay'] + " -s " + SUFFIX + "&\n")
 		f.write ("DPOSFALLBACK_PID=$!\n")
