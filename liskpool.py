@@ -90,7 +90,7 @@ def estimatePayouts (log):
 		log['lastforged'] = rew 
 		rew = rew - lf
 	elif conf['coin'].lower () == 'lisk' and ENABLE_VERSION_1:
-		uri = conf['node'] + '/api/delegates/' + conf['address'] + '/forging_statistics?&start=' + str (log['lastpayout']) + '&end=' + str (int (time.time ()))
+		uri = conf['node'] + '/api/delegates/' + conf['address'] + '/forging_statistics?&fromTimestamp=' + str (log['lastpayout']) + '000&toTimestamp=' + str (int (time.time ())) + '000'
 		d = requests.get (uri)
 		rew = d.json ()['data']['rewards']
 	else:
