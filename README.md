@@ -58,7 +58,7 @@ First clone the lisk-pool repository and install requests:
 
 ```pip3 install requests```
 
-If you are using lisk 1.0.0, oxy 1.0.0 or rise 1.0.0 you need to dpos-api-fallback:
+If you are using lisk or rise you need to dpos-api-fallback:
 
 ```bash
 git clone https://github.com/vekexasia/dpos-api-fallback
@@ -119,9 +119,9 @@ optional arguments:
                         override the minpayout value from config file
 ```
 
-## Lisk 1.0.0 (still WIP), Rise 1.0.0 and Oxy 1.0.0 migration
+## Lisk and Rise migration for version 1.0
 
-Since Lisk version 1.0.0 (still WIP), Rise version 1.0.0 and Oxy version 1.0.0, APIs with secret used for creating 
+Since Lisk version 1.0.0 and Rise version 1.0, APIs with secret used for creating 
 transaction are not available anymore, so we need to use the dpos-api-fallback
 (a special thanks for vekexasia who made this tool). 
 
@@ -138,12 +138,6 @@ npm run package
 
 **nodejs >= 6 is mandatory for running dpos-api-fallback!**
 
-Since this version is not yet the default, you should edit liskpool.py and set
-the variable ENABLE_VERSION_1 to true:
-
-```python
-ENABLE_VERSION_1 = True
-```
 
 ## License
 Copyright 2017-2018 Davide Gessa
