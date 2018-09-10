@@ -103,6 +103,8 @@ def estimatePayouts (log):
 	
 	if forged < 0.1:
 		return ([], log, 0.0)
+
+	print ('Getting voters...')
 		
 	if conf['coin'].lower () == 'lisk' and ENABLE_VERSION_1:
 		votes = requests.get (conf['node'] + '/api/voters?address=' + conf['address']).json ()['data']['votes']
@@ -111,6 +113,7 @@ def estimatePayouts (log):
 		for offset in range(0,votes,100):
 			dpart = requests.get (conf['node'] + '/api/voters?address=' + conf['address'] + '&offset='+str(offset)+'&limit=100').json ()['data']['voters']
 			d += dpart
+			print ('Getting voters...', offset + 100, ' of ', votes)
 
 		d = { "accounts": d }
 	else:
