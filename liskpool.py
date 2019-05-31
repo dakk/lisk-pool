@@ -78,7 +78,7 @@ def createPaymentLine (to, amount):
 	if ENABLE_VERSION_1:
 		nodepay = 'http://localhost:6990'
 
-	return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 1\n"
+	return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 0.3\n"
 			
 
 def estimatePayouts (log):
