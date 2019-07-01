@@ -78,7 +78,7 @@ def createPaymentLine (to, amount):
 	if ENABLE_VERSION_1:
 		nodepay = 'http://localhost:6990'
 
-	return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 0.3\n"
+	return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 0.5\n"
 			
 
 def estimatePayouts (log):
@@ -165,6 +165,8 @@ def pool ():
 		f.write ("DPOSFALLBACK_PID=$!\n")
 		f.write ("sleep 4\n")
 
+	i = 1
+	n = len(topay)
 	for x in topay:
 		# Create the row if not present
 		if not (x['address'] in log['accounts']) and x['balance'] != 0.0:
@@ -186,8 +188,9 @@ def pool ():
 			log['accounts'][x['address']]['pending'] = 0
 		
 
-		f.write ('echo Sending ' + str (x['balance'] - fees) + ' \(+' + str (pending) + ' pending\) to ' + x['address'] + '\n')
+		f.write ('echo ['+str(i)+'/'+str(n)+'] Sending ' + str (x['balance'] - fees) + ' \(+' + str (pending) + ' pending\) to ' + x['address'] + '\n')
 		f.write (createPaymentLine (x['address'], x['balance'] + pending - fees))
+		i += 1
 
 			
 	# Handle pending balances
