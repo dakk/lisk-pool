@@ -70,16 +70,22 @@ def saveLog (log):
 	json.dump (log, open (LOGFILE, 'w'), indent=4, separators=(',', ': '))
 	
 def createPaymentLine (to, amount):
-	data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
-	if conf['secondsecret'] != None:
-		data['secondSecret'] = conf['secondsecret']
+	if conf['coin'].lower() != 'lisk':
+		data = { "secret": conf['secret'], "amount": int (amount * 100000000), "recipientId": to }
+		if conf['secondsecret'] != None:
+			data['secondSecret'] = conf['secondsecret']
 
-	nodepay = conf['nodepay']
-	if ENABLE_VERSION_1:
-		nodepay = 'http://localhost:6990'
+		nodepay = conf['nodepay']
+		if ENABLE_VERSION_1:
+			nodepay = 'http://localhost:6990'
 
-	return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 0.5\n"
-			
+		return 'curl -k -H  "Content-Type: application/json" -X PUT -d \'' + json.dumps (data) + '\' ' + nodepay + "/api/transactions\n\nsleep 0.5\n"
+	else:
+		pline = 'lisk transaction:broadcast `lisk transaction:create --type=0 %.8f %s -p=pass:"%s"' % (amount, to, conf['secret'])
+		if conf['secondsecret'] != None:
+			pline += ' -s=pass:"%s"' % conf['secondsecret']
+		pline += '`\n'
+		return pline
 
 def estimatePayouts (log):
 	if conf['coin'].lower () == 'ark' or conf['coin'].lower () == 'kapu' :
@@ -153,12 +159,12 @@ def pool ():
 		
 	f = open ('payments.sh', 'w')
 
-	if ENABLE_VERSION_1:
+	if ENABLE_VERSION_1 and conf['coin'].lower() != 'lisk':
 		SUFFIX = conf['coin'][0]
 		if conf['coin'] == 'OXY' or conf['coin'] == 'OXYCOIN':
 			SUFFIX = 'X'               
-		if conf['coin'] == 'LISK':
-                        SUFFIX = 'L'
+		#if conf['coin'] == 'LISK':
+        #                SUFFIX = 'L'
 		
 		f.write ("echo Starting dpos-api-fallback\n")
 		f.write ("node dpos-api-fallback/dist/index.js start -n " + conf['nodepay'] + " -s " + SUFFIX + "&\n")
@@ -219,7 +225,7 @@ def pool ():
 			f.write ('echo Sending donation ' + str (conf['donationspercentage'][y]) + '% \(' + str (am) + 'LSK\) to ' + y + '\n')	
 			f.write (createPaymentLine (y, am))
 
-	if ENABLE_VERSION_1:
+	if ENABLE_VERSION_1 and conf['coin'].lower() != 'lisk':
 		f.write ("kill $DPOSFALLBACK_PID\n")
 	f.close ()
 	
