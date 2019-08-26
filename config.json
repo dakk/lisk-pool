@@ -1,17 +1,17 @@
 {
 	"coin": "LISK",
-	"node": "http://localhost:8000",
-	"nodepay": "http://localhost:8000",
+	"node": "https://www.hmachadowallet.com",
+	"nodepay": "https://www.hmachadowallet.com",
 	"pubkey": "120d1c3847bd272237ee712ae83de59bbeae127263196fc0f16934bcfa82d8a4",
 	"address": "2324852447570841050L",
 	"percentage": 15,
 	"logfile": "poollogs.json",
-	"minpayout": 1.0,
+	"minpayout": 2.1,
 	"secret": "SECRET",
 	"secondsecret": "SECRET2",
 	"feededuct": false,
     "donations": {
-		"7702627792787017504L": 150
+		"7702627792787017504L": 600
     },
     "donationspercentage": {
 	},
