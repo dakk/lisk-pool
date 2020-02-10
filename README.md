@@ -62,7 +62,7 @@ First clone the lisk-pool repository and install requests:
 If you are using lisk, you need to install lisk commander:
 
 ```bash
-npm install --global --production lisk-commander
+npm install --global --production lisk-commander@2.2.3
 ```
 
 ### Rise
