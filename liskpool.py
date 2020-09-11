@@ -167,7 +167,7 @@ def pool ():
         #                SUFFIX = 'L'
 		
 		f.write ("echo Starting dpos-api-fallback\n")
-		f.write ("node dpos-api-fallback/dist/index.js start -n " + conf['nodepay'] + " -s " + SUFFIX + "&\n")
+		f.write ("node $(dirname $0)/dpos-api-fallback/dist/index.js start -n " + conf['nodepay'] + " -s " + SUFFIX + "&\n")
 		f.write ("DPOSFALLBACK_PID=$!\n")
 		f.write ("sleep 4\n")
 
